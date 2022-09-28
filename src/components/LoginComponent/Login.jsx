@@ -29,7 +29,7 @@ const Login = () => {
                 if(data.data.success){
 
                     window.localStorage.setItem('accessKey', data.data.accessKey);
-                    myHistory.push('/home')
+                    myHistory.push('/admin')
 
                 }
             })
