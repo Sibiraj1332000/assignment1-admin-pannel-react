@@ -18,12 +18,21 @@ const drawerWidth = 240;
 export default function PermanentDrawerLeft() {
   const myHistory = useHistory()
   const { path } = useRouteMatch()
+
+
   const listItems = [
     {
       text: 'Users',
       onClick: () => myHistory.push(`${path}/users`)
+    },
+    {
+      text: 'Add Book',
+      onClick: () => myHistory.push(`${path}/add-book`)
     }
   ];
+
+
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
