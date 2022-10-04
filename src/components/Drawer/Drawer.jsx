@@ -28,6 +28,10 @@ export default function PermanentDrawerLeft() {
     {
       text: 'Add Book',
       onClick: () => myHistory.push(`${path}/add-book`)
+    },
+    {
+      text: 'Book List',
+      onClick: () => myHistory.push(`${path}/book-list`)
     }
   ];
 
