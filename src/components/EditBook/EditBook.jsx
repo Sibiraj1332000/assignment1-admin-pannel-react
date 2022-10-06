@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,26 +7,20 @@ import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 
 
-
 const EditBook = () => {
     const { location } = useHistory();
+
+    const myHistory = useHistory()
 
     const [editBookId, setEditBookId] = useState('');
     const [bookName, setBookName] = useState('');
     const [auther, setAuther] = useState('');
-    // const [image, setImage] = useState('');
+    const [image, setImage] = useState('');
     const [categorys, setCategory] = useState('');
     const [copy, setCopy] = useState('');
     const [price, setPrice] = useState('');
     const [language, setLanguage] = useState('');
 
-    const bookNameRef = useRef();
-    const autherRef = useRef(null);
-    // const imageRef = useRef(null);
-    const categoryRef = useRef(null);
-    const copyRef = useRef(null);
-    const priceRef = useRef(null);
-    const languageRef = useRef(null);
 
     useEffect(() => {
         const bookId = location.state.bookId
@@ -42,10 +36,6 @@ const EditBook = () => {
                 const { book_name, auther, category, copies, language, price } = res.data.result[0];
                 console.log(book_name, auther, category, copies, language, price);
                 setBookName(book_name)
-                // bookNameRef.current.value=book_name;
-                // autherRef.current.value=auther
-                // categoryRef.current.value = category
-
                 setCategory(category)
                 setLanguage(language)
                 setAuther(auther)
@@ -59,7 +49,7 @@ const EditBook = () => {
 
     const handleBookName = (event) => setBookName(event.target.value);
     const handleAuther = (event) => setAuther(event.target.value);
-    // const handleImage = (event) => setImage(event.target.files[0]);
+    const handleImage = (event) => setImage(event.target.files[0]);
     const handleCategory = (event) => setCategory(event.target.value);
     const handleCopy = (event) => setCopy(event.target.value);
     const handlePrice = (event) => setPrice(event.target.value);
@@ -67,88 +57,35 @@ const EditBook = () => {
 
     const handleOnClick = async () => {
         console.log("Handle onClick");
-        // console.log(bookName, auther, image, category, copy, price, language);
-        // const formData = new FormData();
+        const formData = new FormData();
 
-        // formData.append('bookName', bookName);
-        // formData.append('auther', auther);
-        // formData.append('category', category);
-        // formData.append('copiesRemaining', copy);
-        // formData.append('price', price);
-        // formData.append('language', language);
-        // formData.append('bookImage', image);
+        formData.append('bookName', bookName);
+        formData.append('auther', auther);
+        formData.append('category', categorys);
+        formData.append('copiesRemaining', copy);
+        formData.append('price', price);
+        formData.append('language', language);
+        formData.append('bookId', editBookId);
+        formData.append('bookImage', image);
 
-        // console.log(formData);
+        console.log(formData);
 
-        const updateData = {
-            language: language,
-            price: price,
-            copiesRemaining: copy,
-            category: categorys,
-            auther: auther,
-            bookName: bookName,
-            bookId: editBookId
-        }
-        console.log("updateData ", updateData);
-        await axios.post('http://localhost:3001/admin/edit_book', updateData)
+
+        await axios.post('http://localhost:3001/admin/edit_book', formData)
             .then(res => {
                 if (res.status === 200) {
-                    bookNameRef.current.value = ''
-                    autherRef.current.value = ''
-                    copyRef.current.value = ''
-                    priceRef.current.value = ''
-                    // imageRef.current.value = ''
-                    setLanguage('')
-                    setCategory('')
-                    // setImage('')
-                    setBookName('')
-                    setAuther('')
-                    setCopy('')
-                    setPrice('')
+                    console.log("EDIT SUCCESS");
+                    myHistory.push(`/admin/book-list`);
+
                 }
             })
-        // (bookName, auther, image, category, copy, price, language)
-        // await axios.post('http://localhost:3001/admin/add_book', formData)
-        // .then(res => {
-        //     if (res.status === 200) {
-        //         bookNameRef.current.value = ''
-        //         autherRef.current.value = ''
-        //         copyRef.current.value = ''
-        //         priceRef.current.value = ''
-        //         imageRef.current.value = ''
-        //         setLanguage('')
-        //         setCategory('')
-        //         setImage('')
-        //         setBookName('')
-        //         setAuther('')
-        //         setCopy('')
-        //         setPrice('')
-        //     }
-        // })
-        // .catch((err) => {
-        //     console.log(err);
-        //     alert(err.response.data);
+            .catch((err) => {
+                console.log(err);
+                alert(err.response.data);
 
-        // })
-
-        // bookNameRef.current.value = ''
-        // autherRef.current.value = ''
-        // copyRef.current.value = ''
-        // priceRef.current.value = ''
-        // imageRef.current.value = ''
-        // setLanguage('')
-        // setCategory('')
-        // setImage('')
-        // setBookName('')
-        // setAuther('')
-        // setCopy('')
-        // setPrice('')
+            })
 
     }
-
-
-
-
 
 
     return (
@@ -191,7 +128,7 @@ const EditBook = () => {
                         label="Book Name"
                         name='bookName'
                         margin='normal'
-                        inputRef={bookNameRef}
+                        // inputRef={bookNameRef}
                         onChange={handleBookName}
                     ></TextField>
                 </Grid>
@@ -204,10 +141,8 @@ const EditBook = () => {
                         label="Auther"
                         name='auther'
                         margin='normal'
-                        inputRef={autherRef}
                         value={auther}
                         onChange={handleAuther}
-                    // value={auther}
                     ></TextField>
                 </Grid>
                 <Grid item xs={6}>
@@ -219,7 +154,6 @@ const EditBook = () => {
                             value={categorys}
                             name="category"
                             label="Category"
-                            // inputRef={categoryRef}
                             onChange={handleCategory}
                             sx={{ value: categorys }}
                         >
@@ -239,8 +173,6 @@ const EditBook = () => {
                             name="language"
                             label="Language"
                             onChange={handleLanguage}
-                            // ref={myRef}
-                            inputRef={languageRef}
                             sx={{ value: language }}
                         >
                             <MenuItem value={1}>English</MenuItem>
@@ -252,7 +184,6 @@ const EditBook = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <TextField
-                        // value={copy}
                         fullWidth
                         type={'text'}
                         variant='outlined'
@@ -260,8 +191,6 @@ const EditBook = () => {
                         name='copy'
                         margin='normal'
                         onChange={handleCopy}
-                        // ref={myRef}
-                        inputRef={copyRef}
                         value={copy}
                     ></TextField>
                 </Grid>
@@ -274,28 +203,19 @@ const EditBook = () => {
                         name='price'
                         margin='normal'
                         onChange={handlePrice}
-                        // ref={myRef}
-                        inputRef={priceRef}
                         value={price}
                     ></TextField>
                 </Grid>
 
-                {/* <Grid item xs={12}> */}
-                {/* <FormControl fullWidth margin='normal'>
-                    <InputLabel id="demo-simple-select-label">Language</InputLabel> */}
-                {/* <TextField
-                        fullWidth
-                        type={'file'}
-                        variant='outlined'
-                        // label="Number Of Copy"
-                        name='image'
-                        margin='normal'
-                        onChange={handleImage}
-                        // ref={myRef}
-                        inputRef={imageRef}
-                    ></TextField> */}
-                {/* </FormControl> */}
-                {/* </Grid> */}
+                <TextField
+                    fullWidth
+                    type={'file'}
+                    variant='outlined'
+                    name='image'
+                    margin='normal'
+                    onChange={handleImage}
+                ></TextField>
+                
                 <Grid
                     item xs={12}
                     display='flex'

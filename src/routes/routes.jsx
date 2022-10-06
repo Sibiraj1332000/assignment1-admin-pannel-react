@@ -6,7 +6,6 @@ import PermanentDrawerLeft from '../components/Drawer/Drawer'
 import EditBook from '../components/EditBook/EditBook'
 import Login from '../components/LoginComponent/Login'
 import TakenBooks from '../components/TakenBooks/TakenBooks'
-import { UploadFile } from '../components/UploadFile/UploadFile'
 import Users from '../components/Users/Users'
 import ReturnedBooks from '../ReturnedBooks/ReturnedBooks'
 
@@ -36,7 +35,6 @@ export const Routes = () => {
                                 </Route>
                                 <Route exact path={'/admin/add-book'}>
                                     <AddBook></AddBook>
-                                    {/* <UploadFile></UploadFile> */}
                                 </Route>
                                 <Route exact path={'/admin/book-list'}>
                                    <BookList></BookList>
